@@ -17,6 +17,7 @@ if(isset($_POST['submit'])) {
         move_uploaded_file($file_tmp, $target_dir);
 
         $message = '<p style="color: green;">File uploaded</p>';
+        $picture = "<img src='uploads/${file_name}'>";
       } else {
         $message = '<p style="color: red;">The file is too large</p>';
       }
@@ -38,13 +39,15 @@ if(isset($_POST['submit'])) {
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>File Upload</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <?php echo $message ?? null;  ?>
+  <?= $message ?? null; ?>
   <form action="<?= $_SERVER['PHP_SELF'];?>" method='POST' enctype='multipart/form-data'>
   Select image to upload:
-  <input type="file" name="upload" id="upload">
-  <input type="submit" value="Submit" name="submit">
-</form>
+    <input type="file" name="upload" id="upload">
+    <input type="submit" value="Submit" name="submit">
+  </form>
+  <?= $picture ?? null ?>
 </body>
 </html>
