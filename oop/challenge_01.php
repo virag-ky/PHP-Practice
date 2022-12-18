@@ -1,11 +1,11 @@
 <?php
 
 class Bicycle {
-  var $brand;
-  var $model;
-  var $year;
-  var $description;
-  var $weight_kg = 0.0;
+  public $brand;
+  public $model;
+  public $year;
+  public $description;
+  public $weight_kg = 0.0;
 
   function name() {
     return "This is a {$this->brand} bicycle, model: {$this->model}, {$this->year}.";
