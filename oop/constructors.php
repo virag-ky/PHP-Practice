@@ -12,6 +12,11 @@ class Sofa {
     $this->seats = $args['seats'] ?? $this->seats;
     $this->arms = $args['arms'] ?? $this->arms;
   }
+
+  public function __destruct()
+  {
+    self::$instance_count--;
+  }
  
 }
 
