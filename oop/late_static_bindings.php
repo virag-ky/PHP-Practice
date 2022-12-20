@@ -1,7 +1,7 @@
 <?php
 
-class Sofa {
-  protected static $identity = 'Sofa class';
+class Pet {
+  protected static $identity = 'Pet class';
 
   public static function identity_test() {
     echo 'self: ' . self::$identity . "<br />";
@@ -10,15 +10,14 @@ class Sofa {
     echo 'get_class: ' . get_class() . "<br />";
     echo 'get_called_class: ' . get_called_class() . "<br />";
   }
-
 }
 
-class Loveseat extends Sofa {
-  protected static $identity = 'Loveseat class';
+class Dog extends Pet {
+  protected static $identity = 'Dog class';
 }
 
-Sofa::identity_test();
+Pet::identity_test();
 echo "<hr/>";
-Loveseat::identity_test();
+Dog::identity_test();
 
 ?>
