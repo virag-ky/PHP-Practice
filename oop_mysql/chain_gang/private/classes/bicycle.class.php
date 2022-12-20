@@ -2,6 +2,40 @@
 
 class Bicycle {
 
+  static protected $db;
+
+  static public function set_db($db) {
+    self::$db = $db;
+  }
+
+  static public function find_by_sql($sql) {
+    $result = self::$db->query($sql);
+    $object_array = [];
+
+    while ($record = $result->fetch_assoc()) {
+      $object_array[] = self::instantiate($record);
+    }
+   
+    $result->free();
+    return $object_array;
+  }
+
+  static public function find_all() {
+    $sql = "SELECT * FROM bicycles";
+    return self::find_by_sql($sql);
+  }
+
+  static protected function instantiate($record) {
+    $obj = new self;
+    foreach($record as $property => $value) {
+      if(property_exists($obj, $property)) {
+        $obj->$property = $value;
+      }
+    }
+    return $obj;
+  }
+
+  public $id;
   public $brand;
   public $model;
   public $year;

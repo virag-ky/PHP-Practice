@@ -25,9 +25,13 @@
         <th>Condition</th>
         <th>Price</th>
       </tr>
+      <?php
+      
+      $bikes = Bicycle::find_all();
+      
+      ?>
 
-      <?php foreach($bike_array as $args) { ?>
-        <?php $bike = new Bicycle($args); ?>
+      <?php foreach($bikes as $bike) { ?>
       <tr>
         <td><?php echo h($bike->brand); ?></td>
         <td><?php echo h($bike->model); ?></td>
@@ -42,16 +46,7 @@
       <?php } ?>
 
     </table>
-    <?php
 
-    $sql = "SELECT * FROM bicycles";
-    $result = $db->query($sql);
-    $row = $result->fetch_assoc();
-    $result->free();
-
-    echo "Brand: " . $row['brand'];
-    
-    ?>
   </div>
 
 </div>

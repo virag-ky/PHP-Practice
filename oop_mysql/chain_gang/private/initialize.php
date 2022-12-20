@@ -26,25 +26,17 @@
   require_once('functions.php');
   require_once('db_credentials.php');
   require_once('database_functions.php');
-
-  // Load class definitions manually
-
-  // -> Individually
-  // require_once('classes/bicycle.class.php');
-
-  // -> All classes in directory
-  foreach(glob('classes/*.class.php') as $file) {
-    require_once($file);
-  }
+  require_once('classes/bicycle.class.php');
 
   // Autoload class definitions
-  function my_autoload($class) {
-    if(preg_match('/\A\w+\Z/', $class)) {
-      include('classes/' . $class . '.class.php');
-    }
-  }
-  spl_autoload_register('my_autoload');
+  // function my_autoload($class) {
+  //   if(preg_match('/\A\w+\Z/', $class)) {
+  //     include('classes/' . $class . '.class.php');
+  //   }
+  // }
+  // spl_autoload_register('my_autoload');
 
 $db = db_connect();
+Bicycle::set_db($db);
 
 ?>
