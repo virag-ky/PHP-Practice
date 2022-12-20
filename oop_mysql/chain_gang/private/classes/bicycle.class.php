@@ -25,6 +25,13 @@ class Bicycle {
     return self::find_by_sql($sql);
   }
 
+  static public function find_by_id($id) {
+    $sql = "SELECT * FROM bicycles ";
+    $sql .= "WHERE id='" . self::$db->escape_string($id) . "'";
+    $obj_array = self::find_by_sql($sql);
+    return array_shift($obj_array);
+  }
+
   static protected function instantiate($record) {
     $obj = new self;
     foreach($record as $property => $value) {
