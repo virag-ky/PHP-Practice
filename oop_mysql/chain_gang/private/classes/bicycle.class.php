@@ -128,6 +128,14 @@ class Bicycle {
     return $sanitized;
   }
 
+  public function delete() {
+    $sql = "DELETE FROM bicycles ";
+    $sql .= "WHERE id='" . self::$db->escape_string($this->id) . "' ";
+    $sql .= "LIMIT 1";
+    $result = self::$db->query($sql);
+    return $result;
+  }
+
   public $id;
   public $brand;
   public $model;
