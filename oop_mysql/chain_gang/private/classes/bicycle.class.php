@@ -44,7 +44,7 @@ class Bicycle {
   }
 
   public function create() {
-    $attributes = $this->attributes();
+    $attributes = $this->sanitized_attributes();
     $sql = "INSERT INTO bicycles (";
     $sql .= join(', ', array_keys($attributes));
     $sql .= ") Values ('";
@@ -65,6 +65,14 @@ class Bicycle {
       $attributes[$column] = $this->$column;
     }
     return $attributes;
+  }
+
+  protected function sanitized_attributes() {
+    $sanitized = [];
+    foreach($this->attributes() as $key => $value) {
+      $sanitized[$key] = self::$db->escape_string($value);
+    }
+    return $sanitized;
   }
 
   public $id;
