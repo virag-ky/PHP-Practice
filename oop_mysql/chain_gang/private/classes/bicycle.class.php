@@ -1,140 +1,9 @@
 <?php
 
-class Bicycle {
+class Bicycle extends DatabaseObject {
 
-  static protected $db;
-  static protected $db_columns = ['id', 'brand', 'model', 'year', 'category', 'color', 'gender', 'price', 'weight_kg', 'condition_id', 'description'];
-
-  public $errors = [];
-
-  static public function set_db($db) {
-    self::$db = $db;
-  }
-
-  static public function find_by_sql($sql) {
-    $result = self::$db->query($sql);
-    $object_array = [];
-
-    while ($record = $result->fetch_assoc()) {
-      $object_array[] = self::instantiate($record);
-    }
-   
-    $result->free();
-    return $object_array;
-  }
-
-  static public function find_all() {
-    $sql = "SELECT * FROM bicycles";
-    return self::find_by_sql($sql);
-  }
-
-  static public function find_by_id($id) {
-    $sql = "SELECT * FROM bicycles ";
-    $sql .= "WHERE id='" . self::$db->escape_string($id) . "'";
-    $obj_array = self::find_by_sql($sql);
-    return array_shift($obj_array);
-  }
-
-  static protected function instantiate($record) {
-    $obj = new self;
-    foreach($record as $property => $value) {
-      if(property_exists($obj, $property)) {
-        $obj->$property = $value;
-      }
-    }
-    return $obj;
-  }
-
-  protected function create() {
-    $this->validate();
-    if(!empty($this->errors)) {
-      return false;
-    }
-    $attributes = $this->sanitized_attributes();
-    $sql = "INSERT INTO bicycles (";
-    $sql .= join(', ', array_keys($attributes));
-    $sql .= ") Values ('";
-    $sql .= join("', '", array_values($attributes));
-    $sql .= "')";
-    $result = self::$db->query($sql);
-    $this->id = self::$db->insert_id;
-    return $result;
-  }
-
-  protected function update() {
-    $this->validate();
-    if(!empty($this->errors)) {
-      return false;
-    }
-    $attributes = $this->sanitized_attributes();
-    $attribute_pairs = [];
-    foreach($attributes as $key => $value) {
-      $attribute_pairs[] = "{$key}='{$value}'";
-    }
-    $sql = "UPDATE bicycles SET ";
-    $sql .= join(', ', $attribute_pairs);
-    $sql .= " WHERE id='" . self::$db->escape_string($this->id) . "' ";
-    $sql .= "LIMIT 1";
-    $result = self::$db->query($sql);
-    return $result;
-  }
-
-  protected function validate() {
-    $this->errors = [];
-    if(is_blank($this->brand)) {
-      $this->errors[] = "Brand cannot be blank.";
-    }
-    if(is_blank($this->model)) {
-      $this->errors[] = "Model cannot be blank.";
-    }
-    return $this->errors;
-  }
-
-  public function save() {
-    // a new record will not have an id yet
-    if(isset($this->id)) {
-      return $this->update();
-
-    } else {
-      return $this->create();
-    }
-  }
-
-  public function merge_attributes($args=[]) {
-    foreach($args as $key => $value) {
-      if(property_exists($this, $key && !is_null($value))) {
-        $this->$key = $value;
-      }
-    }
-  }
-
-  public function attributes() {
-    $attributes = [];
-    foreach(self::$db_columns as $column) {
-      if ($column == 'id') {
-        continue;
-      };
-
-      $attributes[$column] = $this->$column;
-    }
-    return $attributes;
-  }
-
-  protected function sanitized_attributes() {
-    $sanitized = [];
-    foreach($this->attributes() as $key => $value) {
-      $sanitized[$key] = self::$db->escape_string($value);
-    }
-    return $sanitized;
-  }
-
-  public function delete() {
-    $sql = "DELETE FROM bicycles ";
-    $sql .= "WHERE id='" . self::$db->escape_string($this->id) . "' ";
-    $sql .= "LIMIT 1";
-    $result = self::$db->query($sql);
-    return $result;
-  }
+  static protected $table_name = 'bicycles';
+  static protected $columns = ['id', 'brand', 'model', 'year', 'category', 'color', 'gender', 'price', 'weight_kg', 'condition_id', 'description'];
 
   public $id;
   public $brand;
@@ -208,6 +77,17 @@ class Bicycle {
     } else {
       return "Unknown";
     }
+  }
+
+  protected function validate() {
+    $this->errors = [];
+    if(is_blank($this->brand)) {
+      $this->errors[] = "Brand cannot be blank.";
+    }
+    if(is_blank($this->model)) {
+      $this->errors[] = "Model cannot be blank.";
+    }
+    return $this->errors;
   }
 
 }

@@ -26,7 +26,8 @@
   require_once('functions.php');
   require_once('db_credentials.php');
   require_once('database_functions.php');
-  require_once('classes/bicycle.class.php');
+  require_once('classes/databaseobject.class.php');
+require_once('classes/bicycle.class.php');
   require_once('status_error_functions.php');
   require_once('validation_functions.php');
 
@@ -38,7 +39,7 @@
   // }
   // spl_autoload_register('my_autoload');
 
-$db = db_connect();
-Bicycle::set_db($db);
+$database = db_connect();
+DatabaseObject::set_database($database);
 
 ?>
