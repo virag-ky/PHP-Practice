@@ -28,6 +28,7 @@
   require_once('database_functions.php');
   require_once('classes/bicycle.class.php');
   require_once('status_error_functions.php');
+  require_once('validation_functions.php');
 
   // Autoload class definitions
   // function my_autoload($class) {
